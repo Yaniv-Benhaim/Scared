@@ -1,18 +1,32 @@
 package tech.gamedev.scared.ui.fragments.main5
 
 import android.os.Bundle
+import android.support.v4.media.session.PlaybackStateCompat
 import androidx.fragment.app.Fragment
-
 import android.view.View
+import android.widget.Toast
+import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
+import androidx.navigation.fragment.findNavController
+import androidx.viewpager2.widget.ViewPager2
 import com.bumptech.glide.RequestManager
+import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.fragment_movie.*
+import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.fragment_audio.*
 import tech.gamedev.scared.R
+import tech.gamedev.scared.adapters.FeaturedAdapter
+import tech.gamedev.scared.adapters.SwipeFeaturedAdapter
+import tech.gamedev.scared.adapters.SwipeSongAdapter
+import tech.gamedev.scared.data.models.Song
 import tech.gamedev.scared.data.models.Video
-import tech.gamedev.scared.databinding.FragmentMovieBinding
+import tech.gamedev.scared.databinding.FragmentFeaturedBinding
+import tech.gamedev.scared.exoplayer.isPlaying
+import tech.gamedev.scared.exoplayer.toSong
+import tech.gamedev.scared.other.Status
 import tech.gamedev.scared.ui.viewmodels.LoginViewModel
+import tech.gamedev.scared.ui.viewmodels.MainViewModel
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -20,40 +34,139 @@ class FeaturedFragment : Fragment(R.layout.fragment_featured) {
 
     @Inject
     lateinit var glide: RequestManager
+
+    @Inject
+    lateinit var featuredAdapter: FeaturedAdapter
+
+    @Inject
+    lateinit var swipeSongAdapter: SwipeFeaturedAdapter
+    private var curPlayingSong: Song? = null
+    private var playbackState: PlaybackStateCompat? = null
+
     private val loginViewModel: LoginViewModel by activityViewModels()
+    private val mainViewModel: MainViewModel by activityViewModels()
     private lateinit var auth: FirebaseAuth
-    private lateinit var binding: FragmentMovieBinding
-    lateinit var videos: ArrayList<Video>
+    private lateinit var binding: FragmentFeaturedBinding
+
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding = FragmentMovieBinding.bind(view)
-
+        binding = FragmentFeaturedBinding.bind(view)
         auth = FirebaseAuth.getInstance()
-        loginViewModel.user.observe(viewLifecycleOwner) {
-            if (it.displayName != null) {
 
+        setupFeaturedViewPager()
+        subscribeToObservers()
 
-                binding.tvName.text = it.displayName.toString()
-                glide.load(it.photoUrl).into(binding.ivProfileImg)
+        binding.vpFeatured3.adapter = swipeSongAdapter
+        binding.vpFeatured3.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
+            override fun onPageSelected(position: Int) {
+                super.onPageSelected(position)
+                if(playbackState?.isPlaying == true) {
+                    mainViewModel.playOrToggleSong(swipeSongAdapter.songs[position])
+                } else {
+                    curPlayingSong = swipeSongAdapter.songs[position]
+                }
+            }
+        })
 
+        binding.btnPlayFeatured.setOnClickListener {
+            Toast.makeText(requireContext(), "PLAY BTN WORKING", Toast.LENGTH_SHORT).show()
+            curPlayingSong?.let {
+                mainViewModel.playOrToggleSong(it, true)
             }
         }
 
-        /*videos = ArrayList()
+        swipeSongAdapter.setItemClickListener {
+            Toast.makeText(requireContext(), "CLICK WORKING", Toast.LENGTH_SHORT).show()
+            findNavController().navigate(
+                R.id.globalActionToSongFragment
+            )
+        }
+    }
 
-        videos.add(Video("https://firebasestorage.googleapis.com/v0/b/scared-6b4bc.appspot.com/o/Crime%20Scene%20Cleaners%20Share%20Bizarre%20Things%20They%20Have%20Seen%20-%20AskReddit.mp4?alt=media&token=3b65dcfe-3826-4eb3-9ece-d97d605d65ae","Cleaners Share Bizarre Things They Have Seen","Reddit Stories",5))
-        videos.add(Video("https://firebasestorage.googleapis.com/v0/b/scared-6b4bc.appspot.com/o/Crime%20Scene%20Photographers%20Share%20Their%20Most%20Traumatizing%20Stories%20-%20AskReddit.mp4?alt=media&token=262ac97c-850a-4e4c-adc9-96b8ef39b724","Crime Scene Photographers Share Their Most Traumatizing Stories","Reddit Stories",5))
-        videos.add(Video("https://firebasestorage.googleapis.com/v0/b/scared-6b4bc.appspot.com/o/Crime%20Scene%20Workers%20Share%20The%20Most%20Disturbing%20Cases%20%20-%20AskReddit.mp4?alt=media&token=fb7a4e54-a091-4b30-86cc-29f34716ef67","Crime Scene Photographers Share Their Most Traumatizing Stories","Reddit Stories",5))
+    private fun switchViewPagerToCurrentSong(song: Song) {
+        val newItemIndex = swipeSongAdapter.songs.indexOf(song)
+        if (newItemIndex != -1) {
+            binding.vpFeatured3.currentItem = newItemIndex
+            curPlayingSong = song
+        }
+    }
+
+    private fun subscribeToObservers(){
+
+        loginViewModel.user.observe(viewLifecycleOwner) {
+            if (it.displayName != null) {
+                binding.tvName.text = it.displayName.toString()
+                glide.load(it.photoUrl).into(binding.ivProfileImg)
+            }
+        }
+
+        mainViewModel.mediaItems.observe(viewLifecycleOwner) {
+            it?.let { result ->
+                when (result.status) {
+                    Status.SUCCESS -> {
+                        result.data?.let { songs ->
+                            swipeSongAdapter.songs = songs
+                            /*if (songs.isNotEmpty()) {
+                                glide.load((curPlayingSong ?: songs[0]).imageUrl)
+                                    .into(ivCurSongImage)
+                            }*/
+                            switchViewPagerToCurrentSong(curPlayingSong ?: return@observe)
+                        }
+                    }
+                    Status.ERROR -> Unit
+                    Status.LOADING -> Unit
+                }
+            }
+        }
+        mainViewModel.curPlayingSong.observe(viewLifecycleOwner) {
+            if (it == null) return@observe
+
+            curPlayingSong = it.toSong()
+            /*glide.load(curPlayingSong?.imageUrl).into(ivCurSongImage)*/
+            switchViewPagerToCurrentSong(curPlayingSong ?: return@observe)
+        }
+
+        mainViewModel.playbackState.observe(viewLifecycleOwner) {
+            playbackState = it
+        }
+
+        mainViewModel.isConnected.observe(viewLifecycleOwner) {
+            it?.getContentIfNotHandled()?.let { result ->
+                when (result.status) {
+                    Status.ERROR -> Snackbar.make(
+                            rootLayout,
+                            result.message ?: "An unknown error occured",
+                            Snackbar.LENGTH_LONG
+                    ).show()
+                    else -> Unit
+                }
+            }
+        }
+        mainViewModel.networkError.observe(viewLifecycleOwner) {
+            it?.getContentIfNotHandled()?.let { result ->
+                when (result.status) {
+                    Status.ERROR -> Snackbar.make(
+                            rootLayout,
+                            result.message ?: "An unknown error occured",
+                            Snackbar.LENGTH_LONG
+                    ).show()
+                    else -> Unit
+                }
+            }
+        }
 
 
 
-        vvScaryVideos.apply {
 
-            adapter = VideoRecyclerView(videos)
-            orientation = ORIENTATION_VERTICAL
 
-        }*/
+
+    }
+
+    private fun setupFeaturedViewPager() = binding.vpFeatured3.apply {
+        adapter = featuredAdapter
+
     }
 
     override fun onStart() {

@@ -2,11 +2,16 @@
     <string name="app_name">Scared</string>
     <string name="notification_channel_name">Audio Channel</string>
     <string name="notification_channel_description">Shows the currently playing audio</string>
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="profile_image">Profile image</string>
-    <string name="search_story_topics">Search story topics...</string>
+    <string name="search_story_topics">Search story topics…</string>
     <string name="login_to_save_your_progress">Login to save your progress</string>
     <string name="login_to_save_the_progress_of_your_stories">Login to save the progress of your stories</string>
+    <string name="new_stories_every_sunday">New stories every Sunday</string>
+    <string name="reddit">Reddit</string>
+    <string name="don_t_let_him_in">Don\'t let him in</string>
+    <string name="featured_viewpager_image">Featured Viewpager Image</string>
+    <string name="play_button_vp">Play Button VP</string>
+    <string name="play">Play</string>
 
 </resources>

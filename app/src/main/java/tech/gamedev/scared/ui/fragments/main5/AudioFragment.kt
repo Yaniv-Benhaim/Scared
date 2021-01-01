@@ -24,7 +24,7 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class AudioFragment : Fragment(R.layout.fragment_audio) {
 
-    lateinit var mainViewModel: MainViewModel
+    private val mainViewModel: MainViewModel by activityViewModels()
 
     private val loginViewModel: LoginViewModel by activityViewModels()
 
@@ -40,7 +40,7 @@ class AudioFragment : Fragment(R.layout.fragment_audio) {
         super.onViewCreated(view, savedInstanceState)
 
         binding = FragmentAudioBinding.bind(view)
-        mainViewModel = ViewModelProvider(requireActivity()).get(MainViewModel::class.java)
+
         setupRecyclerView()
         subscribeToObservers()
 
