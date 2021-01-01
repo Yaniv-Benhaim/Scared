@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1064554163186",
+    "project_id": "scared-6b4bc",
+    "storage_bucket": "scared-6b4bc.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1064554163186:android:1aae9bfd6383c07616996b",
+        "android_client_info": {
+          "package_name": "tech.gamedev.scared"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1064554163186-lihvk5m5grj5ml101deiu7gamsdf3qj3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBuCHz3LH4H4FPSKyxG_PkUKuOO8-OGYsA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1064554163186-lihvk5m5grj5ml101deiu7gamsdf3qj3.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
