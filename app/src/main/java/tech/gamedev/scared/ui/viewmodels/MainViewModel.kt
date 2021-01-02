@@ -20,12 +20,17 @@ class MainViewModel @ViewModelInject constructor(
     private val _mediaItems = MutableLiveData<Resource<List<Song>>>()
     val mediaItems: LiveData<Resource<List<Song>>> = _mediaItems
 
+    private val _adsDisplayed = MutableLiveData<Int>()
+    val adsDisplayed: LiveData<Int> = _adsDisplayed
+
     val isConnected = musicServiceConnection.isConnected
     val networkError = musicServiceConnection.networkError
     val curPlayingSong = musicServiceConnection.curPlayingSong
     val playbackState = musicServiceConnection.playbackState
 
     init {
+
+
         _mediaItems.postValue(Resource.loading(null))
         musicServiceConnection.subscribe(MEDIA_ROOT_ID, object : MediaBrowserCompat.SubscriptionCallback() {
             override fun onChildrenLoaded(
@@ -65,7 +70,7 @@ class MainViewModel @ViewModelInject constructor(
             curPlayingSong.value?.getString(METADATA_KEY_MEDIA_ID)) {
             playbackState.value?.let { playbackState ->
                 when {
-                    playbackState.isPlaying -> if(toggle) musicServiceConnection.transportControls.pause()
+                    playbackState.isPlaying -> if (toggle) musicServiceConnection.transportControls.pause()
                     playbackState.isPlayEnabled -> musicServiceConnection.transportControls.play()
                     else -> Unit
                 }
@@ -75,8 +80,19 @@ class MainViewModel @ViewModelInject constructor(
         }
     }
 
+    fun increaseAdsDisplayed() {
+        val curAdsDisplayed = adsDisplayed.value ?: 0
+        _adsDisplayed.value = curAdsDisplayed + 1
+    }
+
+    fun setCurAdsDisplayedToZero() {
+        _adsDisplayed.value = 0
+    }
+
     override fun onCleared() {
         super.onCleared()
-        musicServiceConnection.unsubscribe(MEDIA_ROOT_ID, object : MediaBrowserCompat.SubscriptionCallback() {})
+        musicServiceConnection.unsubscribe(
+            MEDIA_ROOT_ID,
+            object : MediaBrowserCompat.SubscriptionCallback() {})
     }
 }

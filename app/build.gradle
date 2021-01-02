@@ -121,4 +121,7 @@ dependencies {
     implementation platform('com.google.firebase:firebase-bom:25.12.0')
     implementation 'com.google.firebase:firebase-auth-ktx'
 
+    //FACEBOOK ADS
+    implementation 'com.facebook.android:audience-network-sdk:5.+'
+
 }

@@ -15,4 +15,7 @@ object Constants {
 
     const val NOTIFICATION_CHANNEL_ID = "music"
     const val NOTIFICATION_ID = 1
+    const val MAX_ADS_DIVIDED_BY_THREE = 30
+
+    const val FACEBOOK_PLACEMENT_ID = "154798399456365_154798682789670"
 }
