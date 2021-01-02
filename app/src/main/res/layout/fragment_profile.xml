@@ -4,8 +4,283 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@drawable/brick_wall_bg"
+    android:background="@color/grey"
     tools:context=".ui.fragments.main5.ProfileFragment">
+
+
+
+
+<ScrollView
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+
+
+
+
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/clProfileSettings"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:elevation="4dp">
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cvImageContainerMain"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:elevation="4dp"
+            app:cardCornerRadius="50dp"
+            app:cardBackgroundColor="@color/purple_700"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginTop="120dp">
+
+            <ImageView
+                android:id="@+id/ivProfileImgMain"
+                android:layout_width="100dp"
+                android:background="@drawable/ic_account"
+                android:layout_height="100dp"
+                android:contentDescription="@string/profile_image" />
+        </androidx.cardview.widget.CardView>
+
+        <TextView
+            android:id="@+id/tvNameMain"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            app:layout_constraintTop_toBottomOf="@id/cvImageContainerMain"
+            app:layout_constraintStart_toStartOf="parent"
+            android:gravity="center"
+            android:textColor="@color/white"
+            android:text="@string/login_to_save_your_progress"
+            android:fontFamily="@font/baloo"
+            android:textSize="14sp"
+            android:textStyle="italic"
+            />
+
+        <View
+            android:id="@+id/line1"
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:background="@color/white"
+            app:layout_constraintTop_toBottomOf="@id/tvNameMain"
+            android:layout_marginTop="60dp"/>
+
+        <TextView
+            android:id="@+id/tvNotificationSettings"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            app:layout_constraintTop_toBottomOf="@id/line1"
+            app:layout_constraintStart_toStartOf="parent"
+            android:gravity="start"
+            android:layout_marginStart="24dp"
+            android:layout_marginEnd="24dp"
+            android:textColor="@color/white"
+            android:text="@string/login_to_save_your_progress"
+            android:fontFamily="@font/baloo"
+            android:textSize="14sp"
+            android:textStyle="normal"
+            />
+
+        <androidx.appcompat.widget.SwitchCompat
+            android:id="@+id/switchNotification"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="@id/tvNotificationSettings"
+            app:layout_constraintTop_toTopOf="@id/tvNotificationSettings"
+            android:checked="true"
+            android:layout_marginStart="24dp"
+            android:layout_marginEnd="24dp"/>
+
+        <View
+            android:id="@+id/line2"
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:background="@color/white"
+            app:layout_constraintTop_toBottomOf="@id/switchNotification"
+            android:layout_marginTop="24dp"/>
+
+        <TextView
+            android:id="@+id/tvReceiveNewsLetter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            app:layout_constraintTop_toBottomOf="@id/line2"
+            app:layout_constraintStart_toStartOf="parent"
+            android:gravity="start"
+            android:layout_marginStart="24dp"
+            android:layout_marginEnd="24dp"
+            android:textColor="@color/white"
+            android:text="@string/receive_email_updates"
+            android:fontFamily="@font/baloo"
+            android:textSize="14sp"
+            android:textStyle="normal"
+            />
+
+        <androidx.appcompat.widget.SwitchCompat
+            android:id="@+id/switchNewsletter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:checked="true"
+            app:layout_constraintBottom_toBottomOf="@id/tvReceiveNewsLetter"
+            app:layout_constraintTop_toTopOf="@id/tvReceiveNewsLetter"
+            android:layout_marginStart="24dp"
+            android:layout_marginEnd="24dp"/>
+
+        <View
+            android:id="@+id/line3"
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:background="@color/white"
+            app:layout_constraintTop_toBottomOf="@id/tvReceiveNewsLetter"
+            android:layout_marginTop="24dp"/>
+
+        <TextView
+            android:id="@+id/tvSaveStoriesLocally"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            app:layout_constraintTop_toBottomOf="@id/line3"
+            app:layout_constraintStart_toStartOf="parent"
+            android:gravity="start"
+            android:layout_marginStart="24dp"
+            android:layout_marginEnd="24dp"
+            android:textColor="@color/white"
+            android:text="@string/save_stories_locally"
+            android:fontFamily="@font/baloo"
+            android:textSize="14sp"
+            android:textStyle="normal"
+            />
+
+        <androidx.appcompat.widget.SwitchCompat
+            android:id="@+id/switchLocalStorage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="@id/tvSaveStoriesLocally"
+            app:layout_constraintTop_toTopOf="@id/tvSaveStoriesLocally"
+            android:layout_marginStart="24dp"
+            android:layout_marginEnd="24dp"/>
+
+        <View
+            android:id="@+id/line4"
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:background="@color/white"
+            app:layout_constraintTop_toBottomOf="@id/tvSaveStoriesLocally"
+            android:layout_marginTop="24dp"/>
+
+        <TextView
+            android:id="@+id/tvAboutUs"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            app:layout_constraintTop_toBottomOf="@id/line4"
+            app:layout_constraintStart_toStartOf="parent"
+            android:gravity="start"
+            android:layout_marginStart="24dp"
+            android:layout_marginEnd="24dp"
+            android:textColor="@color/white"
+            android:text="@string/about_scared_app"
+            android:fontFamily="@font/baloo"
+            android:textSize="14sp"
+            android:textStyle="normal"
+            />
+
+        <ImageView
+            android:id="@+id/BtngoToAboutUs"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_baseline_arrow_forward_ios_24"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="@id/tvAboutUs"
+            app:layout_constraintTop_toTopOf="@id/tvAboutUs"
+            android:layout_marginEnd="24dp"
+            android:layout_marginStart="24dp"/>
+
+        <View
+            android:id="@+id/line5"
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:background="@color/white"
+            app:layout_constraintTop_toBottomOf="@id/tvAboutUs"
+            android:layout_marginTop="24dp"/>
+
+        <TextView
+            android:id="@+id/tvBecomeAWriter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            app:layout_constraintTop_toBottomOf="@id/line5"
+            app:layout_constraintStart_toStartOf="parent"
+            android:gravity="start"
+            android:layout_marginStart="24dp"
+            android:layout_marginEnd="24dp"
+            android:textColor="@color/white"
+            android:text="@string/how_to_add_my_own_stories"
+            android:fontFamily="@font/baloo"
+            android:textSize="14sp"
+            android:textStyle="normal"
+            />
+
+        <ImageView
+            android:id="@+id/BtnHowToAddStories"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_baseline_arrow_forward_ios_24"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="@id/tvBecomeAWriter"
+            app:layout_constraintTop_toTopOf="@id/tvBecomeAWriter"
+            android:layout_marginEnd="24dp"
+            android:layout_marginStart="24dp"/>
+
+        <View
+            android:id="@+id/line6"
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:background="@color/white"
+            app:layout_constraintTop_toBottomOf="@id/tvBecomeAWriter"
+            android:layout_marginTop="24dp"/>
+
+        <TextView
+            android:id="@+id/tvPrivacyPolicy"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="48dp"
+            app:layout_constraintTop_toBottomOf="@id/line6"
+
+            app:layout_constraintStart_toStartOf="parent"
+            android:gravity="center"
+            android:layout_marginStart="24dp"
+            android:layout_marginEnd="24dp"
+            android:textColor="@color/white"
+            android:text="@string/privacy_policy"
+            android:fontFamily="@font/baloo"
+            android:textSize="14sp"
+            android:textStyle="normal"
+            />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            app:layout_constraintTop_toBottomOf="@id/tvPrivacyPolicy"/>
+
+
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -65,6 +340,7 @@
 
 
     <TextView
+        android:visibility="invisible"
         android:id="@+id/tvNotLoggedIn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -79,6 +355,7 @@
 
 
     <Button
+        android:visibility="invisible"
         android:id="@+id/btnLogin"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -88,7 +365,13 @@
         android:background="@drawable/btn_login_bg"
         app:layout_constraintBottom_toBottomOf="parent"
         android:layout_margin="120dp"
-        android:text="Sign in/up"/>
+        android:text="@string/sign_in_up"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+</ScrollView>
 
 
 

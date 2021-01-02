@@ -9,9 +9,11 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_width="160dp"
-        app:cardCornerRadius="3dp"
-        android:layout_height="230dp">
+        android:layout_width="155dp"
+        android:elevation="5dp"
+        app:cardBackgroundColor="#80FFFFFF"
+        app:cardCornerRadius="10dp"
+        android:layout_height="205dp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -21,7 +23,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:scaleType="fitXY"
-                android:src="@drawable/img_book"/>
+                android:src="@drawable/img_book_example"/>
 
             <TextView
                 android:id="@+id/tvStoryName"
@@ -30,8 +32,8 @@
                 android:layout_margin="15dp"
                 android:layout_marginStart="15dp"
                 android:layout_marginEnd="15dp"
-                android:fontFamily="@font/amaranth_bold"
-                android:gravity="center"
+                android:fontFamily="@font/baloo"
+                android:gravity="start"
                 android:lineSpacingExtra="2dp"
                 android:text="A message i didn't want to read out loud"
                 android:textColor="@color/white"

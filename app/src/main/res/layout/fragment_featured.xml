@@ -49,6 +49,20 @@
                 android:paddingEnd="10dp"/>
          </LinearLayout>
 
+         <com.airbnb.lottie.LottieAnimationView
+             android:layout_width="wrap_content"
+             android:layout_height="150dp"
+             android:elevation="10dp"
+             app:lottie_rawRes="@raw/swipe_right"
+            app:lottie_autoPlay="true"
+            app:lottie_loop="true"
+             app:layout_constraintStart_toEndOf="@id/btnPlayFeatured"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/vpFeatured3"
+            app:layout_constraintBottom_toBottomOf="@id/vpFeatured3"
+            android:layout_marginEnd="5dp"
+            android:layout_marginStart="140dp"/>
+
          <androidx.viewpager2.widget.ViewPager2
              android:layout_width="match_parent"
              android:layout_height="300dp"
@@ -77,6 +91,59 @@
              android:background="@color/white"
              android:layout_marginTop="32dp"
              app:layout_constraintTop_toBottomOf="@id/tvNewStoriesEverySunday"/>
+
+         <TextView
+             android:id="@+id/tvReadStories"
+             android:layout_width="match_parent"
+             app:layout_constraintTop_toBottomOf="@id/line"
+             android:layout_height="match_parent"
+             android:text="Short Books"
+             android:fontFamily="@font/baloo"
+             android:layout_margin="32dp"
+             android:textSize="20sp"
+             android:textColor="@color/white"
+             android:gravity="start"
+             android:paddingStart="10dp"
+             android:paddingEnd="10dp"
+             />
+
+         <androidx.recyclerview.widget.RecyclerView
+             android:layout_marginTop="12dp"
+             android:id="@+id/rvStories"
+             android:layout_width="match_parent"
+             android:layout_height="250dp"
+             app:layout_constraintTop_toBottomOf="@id/tvReadStories"
+             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
+
+         <TextView
+             android:id="@+id/tvHearStories"
+             android:layout_width="match_parent"
+             app:layout_constraintTop_toBottomOf="@id/rvStories"
+             android:layout_height="match_parent"
+             android:text="Audiostories"
+             android:fontFamily="@font/baloo"
+             android:layout_margin="32dp"
+             android:textSize="20sp"
+             android:layout_marginTop="48dp"
+             android:textColor="@color/white"
+             android:gravity="start"
+             android:paddingStart="10dp"
+             android:paddingEnd="10dp"
+             />
+
+         <androidx.recyclerview.widget.RecyclerView
+             android:layout_marginTop="12dp"
+             android:id="@+id/rvAudioStories"
+             android:layout_width="match_parent"
+             android:layout_height="250dp"
+             android:layout_marginBottom="140dp"
+             app:layout_constraintTop_toBottomOf="@id/tvHearStories"
+             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
+
+         <View
+             android:layout_width="match_parent"
+             android:layout_height="200dp"
+            app:layout_constraintTop_toBottomOf="@id/rvAudioStories"/>
 
 
       </androidx.constraintlayout.widget.ConstraintLayout>

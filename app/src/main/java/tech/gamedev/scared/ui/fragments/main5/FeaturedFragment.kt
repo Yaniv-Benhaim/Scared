@@ -8,6 +8,9 @@ import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import com.bumptech.glide.RequestManager
 import com.google.android.material.snackbar.Snackbar
@@ -16,9 +19,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_audio.*
 import tech.gamedev.scared.R
-import tech.gamedev.scared.adapters.FeaturedAdapter
-import tech.gamedev.scared.adapters.SwipeFeaturedAdapter
-import tech.gamedev.scared.adapters.SwipeSongAdapter
+import tech.gamedev.scared.adapters.*
 import tech.gamedev.scared.data.models.Song
 import tech.gamedev.scared.data.models.Video
 import tech.gamedev.scared.databinding.FragmentFeaturedBinding
@@ -27,10 +28,11 @@ import tech.gamedev.scared.exoplayer.toSong
 import tech.gamedev.scared.other.Status
 import tech.gamedev.scared.ui.viewmodels.LoginViewModel
 import tech.gamedev.scared.ui.viewmodels.MainViewModel
+import tech.gamedev.scared.ui.viewmodels.StoryViewModel
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class FeaturedFragment : Fragment(R.layout.fragment_featured) {
+class FeaturedFragment : Fragment(R.layout.fragment_featured), StoryAdapter.OnStoryClickedListener {
 
     @Inject
     lateinit var glide: RequestManager
@@ -39,12 +41,19 @@ class FeaturedFragment : Fragment(R.layout.fragment_featured) {
     lateinit var featuredAdapter: FeaturedAdapter
 
     @Inject
+    lateinit var audioAdapter: AudioAdapter
+
+    @Inject
     lateinit var swipeSongAdapter: SwipeFeaturedAdapter
+    lateinit var storyAdapter: StoryAdapter
+
     private var curPlayingSong: Song? = null
     private var playbackState: PlaybackStateCompat? = null
 
     private val loginViewModel: LoginViewModel by activityViewModels()
     private val mainViewModel: MainViewModel by activityViewModels()
+    private val storyViewModel: StoryViewModel by activityViewModels()
+
     private lateinit var auth: FirebaseAuth
     private lateinit var binding: FragmentFeaturedBinding
 
@@ -55,6 +64,7 @@ class FeaturedFragment : Fragment(R.layout.fragment_featured) {
         binding = FragmentFeaturedBinding.bind(view)
         auth = FirebaseAuth.getInstance()
 
+        setupRecyclerView()
         setupFeaturedViewPager()
         subscribeToObservers()
 
@@ -83,6 +93,17 @@ class FeaturedFragment : Fragment(R.layout.fragment_featured) {
                 R.id.globalActionToSongFragment
             )
         }
+
+        audioAdapter.setItemClickListener {
+            mainViewModel.playOrToggleSong(it)
+        }
+    }
+
+    private fun setupRecyclerView() = binding.rvAudioStories.apply {
+        val linearLayoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false);
+        layoutManager = linearLayoutManager
+        adapter = audioAdapter
+
     }
 
     private fun switchViewPagerToCurrentSong(song: Song) {
@@ -108,10 +129,7 @@ class FeaturedFragment : Fragment(R.layout.fragment_featured) {
                     Status.SUCCESS -> {
                         result.data?.let { songs ->
                             swipeSongAdapter.songs = songs
-                            /*if (songs.isNotEmpty()) {
-                                glide.load((curPlayingSong ?: songs[0]).imageUrl)
-                                    .into(ivCurSongImage)
-                            }*/
+                            audioAdapter.songs = songs
                             switchViewPagerToCurrentSong(curPlayingSong ?: return@observe)
                         }
                     }
@@ -157,6 +175,13 @@ class FeaturedFragment : Fragment(R.layout.fragment_featured) {
             }
         }
 
+        storyViewModel.stories.observe(viewLifecycleOwner) {
+            if(it.isNotEmpty()) {
+                storyAdapter = StoryAdapter(it, requireContext(), this)
+                setupBookRecyclerView()
+
+            }
+        }
 
 
 
@@ -166,7 +191,18 @@ class FeaturedFragment : Fragment(R.layout.fragment_featured) {
 
     private fun setupFeaturedViewPager() = binding.vpFeatured3.apply {
         adapter = featuredAdapter
+    }
 
+    private fun setupBookRecyclerView() = binding.rvStories.apply {
+
+        val linearLayoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false);
+        layoutManager = linearLayoutManager
+        adapter = storyAdapter
+    }
+
+    override fun onStoryClick(title: String, story: String) {
+        val action = FeaturedFragmentDirections.actionFeaturedFragmentToStoryFragment(title, story)
+        findNavController().navigate(action)
     }
 
     override fun onStart() {

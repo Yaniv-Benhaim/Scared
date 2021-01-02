@@ -18,7 +18,11 @@
         android:id="@+id/featuredFragment"
         android:name="tech.gamedev.scared.ui.fragments.main5.FeaturedFragment"
         android:label="fragment_movie"
-        tools:layout="@layout/fragment_featured" />
+        tools:layout="@layout/fragment_featured" >
+        <action
+            android:id="@+id/action_featuredFragment_to_storyFragment"
+            app:destination="@id/storyFragment" />
+    </fragment>
     <fragment
         android:id="@+id/audioFragment"
         android:name="tech.gamedev.scared.ui.fragments.main5.AudioFragment"

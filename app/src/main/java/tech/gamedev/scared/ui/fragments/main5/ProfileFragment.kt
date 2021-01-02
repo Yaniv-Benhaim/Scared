@@ -69,12 +69,15 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
 
         loginViewModel.user.observe(viewLifecycleOwner) {
             if(it != null){
+                binding.clProfileSettings.isVisible = true
                 binding.tvName.text = it.displayName
                 glide.load(it.photoUrl).into(binding.ivProfileImg)
+                glide.load(it.photoUrl).into(binding.ivProfileImgMain)
 
                 binding.btnLogin.isVisible = false
                 binding.tvNotLoggedIn.isVisible = false
             }else{
+                binding.clProfileSettings.isVisible = false
                 binding.tvNotLoggedIn.isVisible = true
                 binding.btnLogin.isVisible = true
 

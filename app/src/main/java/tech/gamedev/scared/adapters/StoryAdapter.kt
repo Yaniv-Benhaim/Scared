@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.item_story.view.*
 import tech.gamedev.scared.R
 import tech.gamedev.scared.data.models.Story
@@ -35,6 +36,8 @@ class StoryAdapter(
 
         holder.itemView.apply {
             tvStoryName.text = story.title
+
+            Glide.with(context).load(story.imageUrl).into(ivStoryCover)
         }
 
         holder.initialize(story.title, story.story, clickedListener)

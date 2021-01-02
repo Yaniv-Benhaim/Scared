@@ -13,5 +13,12 @@
     <string name="featured_viewpager_image">Featured Viewpager Image</string>
     <string name="play_button_vp">Play Button VP</string>
     <string name="play">Play</string>
+    <string name="written">Written</string>
+    <string name="receive_email_updates">Receive email updates</string>
+    <string name="save_stories_locally">Save stories locally</string>
+    <string name="about_scared_app">About Scared App</string>
+    <string name="how_to_add_my_own_stories">How to add my own stories ?</string>
+    <string name="privacy_policy">Privacy Policy</string>
+    <string name="sign_in_up">Sign in/up</string>
 
 </resources>

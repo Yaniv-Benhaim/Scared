@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/brick_wall_bg"
+    android:background="@color/grey"
     tools:context=".ui.fragments.main5.AudioFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -77,6 +77,7 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvAllSongs"
         android:layout_width="wrap_content"
+        android:layout_marginTop="60dp"
         android:layout_height="match_parent"
         app:layout_constraintBottom_toBottomOf="parent"
         android:layout_marginBottom="120dp"
