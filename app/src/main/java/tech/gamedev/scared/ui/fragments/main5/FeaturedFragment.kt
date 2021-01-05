@@ -13,6 +13,8 @@ import androidx.viewpager2.widget.ViewPager2
 import com.bumptech.glide.RequestManager
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_audio.*
@@ -52,10 +54,17 @@ class FeaturedFragment : Fragment(R.layout.fragment_featured), StoryAdapter.OnSt
     private val mainViewModel: MainViewModel by activityViewModels()
     private val storyViewModel: StoryViewModel by activityViewModels()
 
-    private lateinit var auth: FirebaseAuth
+
     private lateinit var binding: FragmentFeaturedBinding
 
     private var signInVisible = false
+    private lateinit var auth: FirebaseAuth
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        auth = Firebase.auth
+    }
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -110,14 +119,14 @@ class FeaturedFragment : Fragment(R.layout.fragment_featured), StoryAdapter.OnSt
         })
 
         binding.btnPlayFeatured.setOnClickListener {
-            Toast.makeText(requireContext(), "PLAY BTN WORKING", Toast.LENGTH_SHORT).show()
+            
             curPlayingSong?.let {
                 mainViewModel.playOrToggleSong(it, true)
             }
         }
 
         swipeSongAdapter.setItemClickListener {
-            Toast.makeText(requireContext(), "CLICK WORKING", Toast.LENGTH_SHORT).show()
+
             findNavController().navigate(
                 R.id.globalActionToSongFragment
             )

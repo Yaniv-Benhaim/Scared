@@ -126,4 +126,7 @@ dependencies {
 
     //YOUTUBE API CUSTOM PLAYER
     implementation 'com.pierfrancescosoffritti.androidyoutubeplayer:core:10.0.5'
+
+    //APP RATE
+    implementation 'com.suddenh4x.ratingdialog:awesome-app-rating:2.2.1'
 }

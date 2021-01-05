@@ -6,9 +6,13 @@ import android.view.View
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.bumptech.glide.RequestManager
 import com.facebook.ads.*
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_audio.*
 import tech.gamedev.scared.R
@@ -40,6 +44,15 @@ class AudioFragment : Fragment(R.layout.fragment_audio) {
 
     private lateinit var binding: FragmentAudioBinding
 
+    private var signInVisible = false
+    private lateinit var auth: FirebaseAuth
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        auth = Firebase.auth
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -48,15 +61,45 @@ class AudioFragment : Fragment(R.layout.fragment_audio) {
         setupRecyclerView()
         subscribeToObservers()
 
+        binding.ivProfileImg.setOnClickListener {
+            when (signInVisible) {
+                false -> {
+                    if (loginViewModel.user.value != null) {
+                        binding.btnSignInOrOut.text = getString(R.string.sign_out)
+                    } else {
+                        binding.btnSignInOrOut.text = getString(R.string.sign_in)
+                    }
+                    signInVisible = true
+                    binding.cvSignInOrOut.isVisible = true
+                }
+                true -> {
+                    signInVisible = false
+                    binding.cvSignInOrOut.isVisible = false
+                }
+            }
+        }
+
+        binding.btnSignInOrOut.setOnClickListener {
+            if (binding.btnSignInOrOut.text == getString(R.string.sign_in)) {
+                findNavController().navigate(R.id.globalActionToProfileFragment)
+            } else {
+                auth.signOut()
+                loginViewModel.signOut()
+            }
+        }
+
         //SET FACEBOOK AD
         AudienceNetworkAds.initialize(requireContext())
 
 
         loginViewModel.user.observe(viewLifecycleOwner) {
             if (it != null) {
-                binding.tvNameAudio.text = it.displayName
+                binding.tvName.text = it.displayName
                 glide.load(it.photoUrl).into(binding.ivProfileImg)
 
+            } else {
+                binding.ivProfileImg.setImageResource(R.drawable.ic_account)
+                binding.tvName.text = getString(R.string.not_signed_in)
             }
         }
 

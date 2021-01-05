@@ -41,7 +41,11 @@
         android:id="@+id/profileFragment"
         android:name="tech.gamedev.scared.ui.fragments.main5.ProfileFragment"
         android:label="fragment_profile"
-        tools:layout="@layout/fragment_profile" />
+        tools:layout="@layout/fragment_profile" >
+        <action
+            android:id="@+id/action_profileFragment_to_privacyPolicyFragment"
+            app:destination="@id/privacyPolicyFragment" />
+    </fragment>
     <fragment
         android:id="@+id/videoFragment"
         android:name="tech.gamedev.scared.ui.fragments.main5.VideoFragment"
@@ -98,4 +102,13 @@
     <action
         android:id="@+id/globalActionToProfileFragment"
         app:destination="@id/profileFragment" />
+    <fragment
+        android:id="@+id/privacyPolicyFragment"
+        android:name="tech.gamedev.scared.ui.fragments.PrivacyPolicyFragment"
+        android:label="fragment_privacy_policy"
+        tools:layout="@layout/fragment_privacy_policy" >
+        <action
+            android:id="@+id/action_privacyPolicyFragment_to_profileFragment"
+            app:destination="@id/profileFragment" />
+    </fragment>
 </navigation>

@@ -7,6 +7,7 @@ import android.view.View
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.RequestManager
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
@@ -33,6 +34,8 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
     lateinit var glide: RequestManager
 
     private lateinit var auth: FirebaseAuth
+    private var signInVisible = false
+
 
     private lateinit var binding: FragmentProfileBinding
 
@@ -53,20 +56,52 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
                 .build()
         val mGoogleSignInClient = GoogleSignIn.getClient(requireActivity(), gso)
 
-        btnLogin.setOnClickListener {
+        binding.tvPrivacyPolicy.setOnClickListener {
+            findNavController().navigate(R.id.action_profileFragment_to_privacyPolicyFragment)
+        }
+
+        binding.btnLogin.setOnClickListener {
             val signInIntent = mGoogleSignInClient.signInIntent
             startActivityForResult(signInIntent, AUTH_REQUEST_CODE)
         }
 
         subscribeToObservers()
 
+        binding.ivProfileImg.setOnClickListener {
+            when (signInVisible) {
+                false -> {
+                    if (loginViewModel.user.value != null) {
+                        binding.btnSignInOrOut.text = getString(R.string.sign_out)
+                    } else {
+                        binding.btnSignInOrOut.text = getString(R.string.sign_in)
+                    }
+                    signInVisible = true
+                    binding.cvSignInOrOut.isVisible = true
+                }
+                true -> {
+                    signInVisible = false
+                    binding.cvSignInOrOut.isVisible = false
+                }
+            }
+        }
+
+        binding.btnSignInOrOut.setOnClickListener {
+            if (binding.btnSignInOrOut.text == getString(R.string.sign_in)) {
+                findNavController().navigate(R.id.globalActionToProfileFragment)
+            } else {
+                auth.signOut()
+                loginViewModel.signOut()
+            }
+        }
+
     }
 
-    fun subscribeToObservers() {
+    private fun subscribeToObservers() {
         loginViewModel.user.observe(viewLifecycleOwner) {
             if (it != null) {
                 binding.clProfileSettings.isVisible = true
                 binding.tvName.text = it.displayName
+                binding.tvNameMain.text = it.displayName
                 glide.load(it.photoUrl).into(binding.ivProfileImg)
                 glide.load(it.photoUrl).into(binding.ivProfileImgMain)
 
@@ -76,6 +111,8 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
                 binding.clProfileSettings.isVisible = false
                 binding.tvNotLoggedIn.isVisible = true
                 binding.btnLogin.isVisible = true
+                binding.ivProfileImg.setImageResource(R.drawable.ic_account)
+                binding.tvName.text = getString(R.string.not_signed_in)
 
             }
         }

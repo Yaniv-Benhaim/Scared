@@ -3,12 +3,16 @@ package tech.gamedev.scared.ui.fragments.main5
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.bumptech.glide.RequestManager
 import com.facebook.ads.*
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_book.*
 import tech.gamedev.scared.R
@@ -39,13 +43,50 @@ class BookFragment : Fragment(R.layout.fragment_book) , StoryAdapter.OnStoryClic
 
     private lateinit var binding: FragmentBookBinding
 
+    private var signInVisible = false
+    private lateinit var auth: FirebaseAuth
+
     lateinit var stories: ArrayList<Story>
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        auth = Firebase.auth
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentBookBinding.bind(view)
 
         subscribeToObservers()
+
+        binding.ivProfileImg.setOnClickListener {
+            when (signInVisible) {
+                false -> {
+                    if (loginViewModel.user.value != null) {
+                        binding.btnSignInOrOut.text = getString(R.string.sign_out)
+                    } else {
+                        binding.btnSignInOrOut.text = getString(R.string.sign_in)
+                    }
+                    signInVisible = true
+                    binding.cvSignInOrOut.isVisible = true
+                }
+                true -> {
+                    signInVisible = false
+                    binding.cvSignInOrOut.isVisible = false
+                }
+            }
+        }
+
+        binding.btnSignInOrOut.setOnClickListener {
+            if (binding.btnSignInOrOut.text == getString(R.string.sign_in)) {
+                findNavController().navigate(R.id.globalActionToProfileFragment)
+            } else {
+                auth.signOut()
+                loginViewModel.signOut()
+            }
+        }
+
 
         //SET FACEBOOK AD
         AudienceNetworkAds.initialize(requireContext())
@@ -124,6 +165,9 @@ class BookFragment : Fragment(R.layout.fragment_book) , StoryAdapter.OnStoryClic
                 binding.tvName.text = it.displayName
                 glide.load(it.photoUrl).into(ivProfileImg)
 
+            } else {
+                binding.ivProfileImg.setImageResource(R.drawable.ic_account)
+                binding.tvName.text = getString(R.string.not_signed_in)
             }
         }
 

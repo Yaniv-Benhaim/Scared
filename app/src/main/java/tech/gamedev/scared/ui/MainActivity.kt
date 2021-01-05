@@ -1,5 +1,6 @@
 package tech.gamedev.scared.ui
 
+import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.support.v4.media.session.PlaybackStateCompat
 import android.view.View
@@ -7,6 +8,7 @@ import android.view.Window
 import android.view.WindowManager
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.setupWithNavController
@@ -14,6 +16,8 @@ import androidx.viewpager2.widget.ViewPager2
 import com.bumptech.glide.RequestManager
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.firestore.FirebaseFirestore
+import com.suddenh4x.ratingdialog.AppRating
+import com.suddenh4x.ratingdialog.preferences.RatingThreshold
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_main.*
 import tech.gamedev.scared.R
@@ -49,12 +53,33 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        if (savedInstanceState == null) {
+            AppRating.Builder(this)
+                .setMinimumLaunchTimes(5)
+                .setMinimumDays(2)
+                .setMinimumLaunchTimesToShowAgain(3)
+                .setMinimumDaysToShowAgain(3)
+                .setRatingThreshold(RatingThreshold.FOUR)
+                .setIconDrawable(ContextCompat.getDrawable(this,R.drawable.logo))
+                .showIfMeetsConditions()
+        }
+
         requestWindowFeature(Window.FEATURE_NO_TITLE)
         window.setFlags(
             WindowManager.LayoutParams.FLAG_FULLSCREEN,
             WindowManager.LayoutParams.FLAG_FULLSCREEN
         )
         setContentView(R.layout.activity_main)
+
+        AppRating.Builder(this)
+            .setMinimumLaunchTimes(5)
+            .setMinimumDays(2)
+            .setMinimumLaunchTimesToShowAgain(3)
+            .setMinimumDaysToShowAgain(3)
+            .setRatingThreshold(RatingThreshold.FOUR)
+            .setIconDrawable(ContextCompat.getDrawable(this,R.drawable.logo))
+            .showIfMeetsConditions()
 
 
         //SUBSCRIBE TO VIEWMODEL OBSERVERS
