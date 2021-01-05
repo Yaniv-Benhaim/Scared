@@ -26,6 +26,7 @@
 
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:visibility="gone"
         android:id="@+id/clProfileSettings"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -339,27 +340,30 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-    <TextView
-        android:visibility="invisible"
-        android:id="@+id/tvNotLoggedIn"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toTopOf="@+id/btnLogin"
-        android:gravity="center"
-        android:textColor="@color/white"
-        android:text="@string/login_to_save_the_progress_of_your_stories"
-        android:fontFamily="@font/baloo"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        android:layout_margin="48dp"/>
+        <TextView
+            android:layout_marginStart="48dp"
+            android:layout_marginTop="220dp"
+            android:layout_marginEnd="48dp"
+            android:id="@+id/tvNotLoggedIn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toTopOf="@+id/btnLogin"
+            android:gravity="center"
+            android:textColor="@color/white"
+            android:text="@string/login_to_save_the_progress_of_your_stories"
+            android:fontFamily="@font/baloo"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:visibility="visible"
+            app:layout_constraintTop_toTopOf="parent" />
 
 
     <Button
-        android:visibility="invisible"
+        android:visibility="visible"
         android:id="@+id/btnLogin"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvNotLoggedIn"
         android:elevation="10dp"
         android:textColor="@color/white"
         android:background="@drawable/btn_login_bg"

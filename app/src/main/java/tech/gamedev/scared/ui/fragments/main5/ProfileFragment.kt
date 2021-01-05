@@ -3,27 +3,19 @@ package tech.gamedev.scared.ui.fragments.main5
 import android.content.ContentValues
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.core.view.isVisible
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.RequestManager
 import com.google.android.gms.auth.api.signin.GoogleSignIn
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount
-import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
-import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.ktx.auth
-import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.ktx.Firebase
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_profile.*
@@ -32,7 +24,6 @@ import tech.gamedev.scared.databinding.FragmentProfileBinding
 import tech.gamedev.scared.other.Constants.AUTH_REQUEST_CODE
 import tech.gamedev.scared.ui.viewmodels.LoginViewModel
 import timber.log.Timber
-import java.lang.Exception
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -67,8 +58,13 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
             startActivityForResult(signInIntent, AUTH_REQUEST_CODE)
         }
 
+        subscribeToObservers()
+
+    }
+
+    fun subscribeToObservers() {
         loginViewModel.user.observe(viewLifecycleOwner) {
-            if(it != null){
+            if (it != null) {
                 binding.clProfileSettings.isVisible = true
                 binding.tvName.text = it.displayName
                 glide.load(it.photoUrl).into(binding.ivProfileImg)
@@ -76,16 +72,13 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
 
                 binding.btnLogin.isVisible = false
                 binding.tvNotLoggedIn.isVisible = false
-            }else{
+            } else {
                 binding.clProfileSettings.isVisible = false
                 binding.tvNotLoggedIn.isVisible = true
                 binding.btnLogin.isVisible = true
 
             }
         }
-
-
-
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

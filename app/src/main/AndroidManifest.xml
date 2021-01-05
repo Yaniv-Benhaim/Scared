@@ -16,10 +16,13 @@
         android:theme="@style/Theme.Scared">
         <service android:name=".exoplayer.MusicService">
             <intent-filter>
-                <action android:name="android.media.browse.MediaBrowserService"/>
+                <action android:name="android.media.browse.MediaBrowserService" />
             </intent-filter>
         </service>
-        <activity android:name=".ui.MainActivity">
+        <activity
+            android:name=".ui.MainActivity"
+            android:configChanges="orientation|screenSize|keyboardHidden|smallestScreenSize|screenLayout">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

@@ -20,5 +20,11 @@
     <string name="how_to_add_my_own_stories">How to add my own stories ?</string>
     <string name="privacy_policy">Privacy Policy</string>
     <string name="sign_in_up">Sign in/up</string>
+    <string name="documentaries">Documentaries</string>
+    <string name="reddit_stories">Reddit stories</string>
+    <string name="new_videos_every_sunday">New videos every Sunday</string>
+    <string name="sign_out">Sign out</string>
+    <string name="sign_in">Sign in</string>
+    <string name="not_signed_in">You are not signed in</string>
 
 </resources>

@@ -6,11 +6,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.auth.FirebaseUser
-import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
-import tech.gamedev.scared.exoplayer.MusicServiceConnection
 import tech.gamedev.scared.repo.LoginRepository
-import javax.inject.Inject
 
 
 class LoginViewModel @ViewModelInject constructor(
@@ -20,7 +17,7 @@ class LoginViewModel @ViewModelInject constructor(
 
 
     private val _user = MutableLiveData<FirebaseUser>()
-    val user : LiveData<FirebaseUser> = _user
+    val user: LiveData<FirebaseUser> = _user
 
     fun assignUser(user: FirebaseUser) {
         _user.value = user
@@ -31,6 +28,9 @@ class LoginViewModel @ViewModelInject constructor(
         loginRepository.checkIfUserExists(acct)
     }
 
+    fun signOut() {
+        _user.value = null
+    }
 
 
 }

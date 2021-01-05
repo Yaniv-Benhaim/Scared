@@ -63,6 +63,28 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cvSignInOrOut"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:visibility="gone"
+        app:cardCornerRadius="5dp"
+        app:cardElevation="4dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/clProfileBarAudio">
+
+        <TextView
+            android:id="@+id/btnSignInOrOut"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="6dp"
+            android:text="Sign out"
+            android:textColor="@color/black" />
+
+
+    </androidx.cardview.widget.CardView>
+
     <ProgressBar
         android:id="@+id/allSongsProgressBar"
         android:layout_width="wrap_content"

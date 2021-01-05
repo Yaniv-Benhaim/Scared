@@ -2,15 +2,13 @@ package tech.gamedev.scared.ui.fragments.main5
 
 import android.os.Bundle
 import android.support.v4.media.session.PlaybackStateCompat
-import androidx.fragment.app.Fragment
 import android.view.View
 import android.widget.Toast
 import androidx.core.view.isVisible
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import com.bumptech.glide.RequestManager
 import com.google.android.material.snackbar.Snackbar
@@ -18,10 +16,10 @@ import com.google.firebase.auth.FirebaseAuth
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_audio.*
+import kotlinx.android.synthetic.main.fragment_featured.*
 import tech.gamedev.scared.R
 import tech.gamedev.scared.adapters.*
 import tech.gamedev.scared.data.models.Song
-import tech.gamedev.scared.data.models.Video
 import tech.gamedev.scared.databinding.FragmentFeaturedBinding
 import tech.gamedev.scared.exoplayer.isPlaying
 import tech.gamedev.scared.exoplayer.toSong
@@ -57,6 +55,7 @@ class FeaturedFragment : Fragment(R.layout.fragment_featured), StoryAdapter.OnSt
     private lateinit var auth: FirebaseAuth
     private lateinit var binding: FragmentFeaturedBinding
 
+    private var signInVisible = false
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -68,11 +67,41 @@ class FeaturedFragment : Fragment(R.layout.fragment_featured), StoryAdapter.OnSt
         setupFeaturedViewPager()
         subscribeToObservers()
 
+        binding.ivProfileImg.setOnClickListener {
+            when (signInVisible) {
+                false -> {
+                    if (loginViewModel.user.value != null) {
+                        binding.btnSignInOrOut.text = getString(R.string.sign_out)
+                    } else {
+                        binding.btnSignInOrOut.text = getString(R.string.sign_in)
+                    }
+                    signInVisible = true
+                    binding.cvSignInOrOut.isVisible = true
+                }
+                true -> {
+                    signInVisible = false
+                    binding.cvSignInOrOut.isVisible = false
+                }
+            }
+        }
+
+        binding.btnSignInOrOut.setOnClickListener {
+            if (binding.btnSignInOrOut.text == getString(R.string.sign_in)) {
+                findNavController().navigate(R.id.globalActionToProfileFragment)
+            } else {
+                auth.signOut()
+                loginViewModel.signOut()
+            }
+        }
+
+
+
         binding.vpFeatured3.adapter = swipeSongAdapter
-        binding.vpFeatured3.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
+        binding.vpFeatured3.registerOnPageChangeCallback(object :
+            ViewPager2.OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {
                 super.onPageSelected(position)
-                if(playbackState?.isPlaying == true) {
+                if (playbackState?.isPlaying == true) {
                     mainViewModel.playOrToggleSong(swipeSongAdapter.songs[position])
                 } else {
                     curPlayingSong = swipeSongAdapter.songs[position]
@@ -100,7 +129,8 @@ class FeaturedFragment : Fragment(R.layout.fragment_featured), StoryAdapter.OnSt
     }
 
     private fun setupRecyclerView() = binding.rvAudioStories.apply {
-        val linearLayoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false);
+        val linearLayoutManager =
+            LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
         layoutManager = linearLayoutManager
         adapter = audioAdapter
 
@@ -117,9 +147,12 @@ class FeaturedFragment : Fragment(R.layout.fragment_featured), StoryAdapter.OnSt
     private fun subscribeToObservers(){
 
         loginViewModel.user.observe(viewLifecycleOwner) {
-            if (it.displayName != null) {
+            if (it != null) {
                 binding.tvName.text = it.displayName.toString()
                 glide.load(it.photoUrl).into(binding.ivProfileImg)
+            } else {
+                binding.ivProfileImg.setImageResource(R.drawable.ic_account)
+                binding.tvName.text = getString(R.string.not_signed_in)
             }
         }
 
@@ -195,7 +228,8 @@ class FeaturedFragment : Fragment(R.layout.fragment_featured), StoryAdapter.OnSt
 
     private fun setupBookRecyclerView() = binding.rvStories.apply {
 
-        val linearLayoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false);
+        val linearLayoutManager =
+            LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
         layoutManager = linearLayoutManager
         adapter = storyAdapter
     }

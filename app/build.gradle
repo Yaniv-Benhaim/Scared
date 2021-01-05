@@ -124,4 +124,6 @@ dependencies {
     //FACEBOOK ADS
     implementation 'com.facebook.android:audience-network-sdk:5.+'
 
+    //YOUTUBE API CUSTOM PLAYER
+    implementation 'com.pierfrancescosoffritti.androidyoutubeplayer:core:10.0.5'
 }

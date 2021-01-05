@@ -1,13 +1,12 @@
 package tech.gamedev.scared.ui
 
-import tech.gamedev.scared.adapters.SwipeSongAdapter
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v4.media.session.PlaybackStateCompat
 import android.view.View
 import android.view.Window
 import android.view.WindowManager
 import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.setupWithNavController
@@ -18,12 +17,15 @@ import com.google.firebase.firestore.FirebaseFirestore
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_main.*
 import tech.gamedev.scared.R
+import tech.gamedev.scared.adapters.SwipeSongAdapter
 import tech.gamedev.scared.data.models.Song
+import tech.gamedev.scared.data.models.Video
 import tech.gamedev.scared.exoplayer.isPlaying
 import tech.gamedev.scared.exoplayer.toSong
 import tech.gamedev.scared.other.Status
 import tech.gamedev.scared.ui.viewmodels.MainViewModel
 import tech.gamedev.scared.ui.viewmodels.StoryViewModel
+import tech.gamedev.scared.ui.viewmodels.VideoViewModel
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -32,6 +34,8 @@ class MainActivity : AppCompatActivity() {
     private val mainViewModel: MainViewModel by viewModels()
 
     private val storyViewModel: StoryViewModel by viewModels()
+
+    private val videoViewModel: VideoViewModel by viewModels()
 
     @Inject
     lateinit var swipeSongAdapter: SwipeSongAdapter
@@ -46,15 +50,20 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         requestWindowFeature(Window.FEATURE_NO_TITLE)
-        window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-        WindowManager.LayoutParams.FLAG_FULLSCREEN)
+        window.setFlags(
+            WindowManager.LayoutParams.FLAG_FULLSCREEN,
+            WindowManager.LayoutParams.FLAG_FULLSCREEN
+        )
         setContentView(R.layout.activity_main)
+
 
         //SUBSCRIBE TO VIEWMODEL OBSERVERS
         subscribeToObservers()
-        storyViewModel.stories.observe(this) {
+        storyViewModel.stories.observe(this) {}
 
-        }
+        videoViewModel.documentaries.observe(this) {}
+        videoViewModel.redditVideos.observe(this) {}
+
 
         //SET PLAY AND SWIPE VIEWPAGER
         vpSong.adapter = swipeSongAdapter
@@ -62,7 +71,7 @@ class MainActivity : AppCompatActivity() {
         vpSong.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {
                 super.onPageSelected(position)
-                if(playbackState?.isPlaying == true) {
+                if (playbackState?.isPlaying == true) {
                     mainViewModel.playOrToggleSong(swipeSongAdapter.songs[position])
                 } else {
                     curPlayingSong = swipeSongAdapter.songs[position]
@@ -90,7 +99,7 @@ class MainActivity : AppCompatActivity() {
         navHostFragment.findNavController()
             .addOnDestinationChangedListener { _, destination, _ ->
                 when (destination.id) {
-                    R.id.featuredFragment, R.id.audioFragment, R.id.bookFragment, R.id.searchFragment, R.id.profileFragment -> {
+                    R.id.featuredFragment, R.id.audioFragment, R.id.bookFragment, R.id.videoFragment, R.id.profileFragment -> {
                         bottomNavigationView.visibility = View.VISIBLE
                         showBottomBar()
                     }
@@ -361,18 +370,49 @@ class MainActivity : AppCompatActivity() {
 
         ))
 
-        audioFiles.add(Song(
+        audioFiles.add(
+            Song(
                 "20",
                 "You'll Never Believe",
                 "CreepyPasta",
                 "https://firebasestorage.googleapis.com/v0/b/scared-6b4bc.appspot.com/o/You'll%20Never%20Believe%20What%20Happened%20to%20Me%20at%20Work%20Yesterday%20%20Creepypasta.mp3?alt=media&token=b1dfbd4e-b827-43d1-b252-bc8a2dac8457",
                 "https://media.moddb.com/images/games/1/39/38962/steamworkshop_webupload_previewfile_394789003_preview_1.jpg"
 
-        ))
+            )
+        )
 
 
         for (audio in audioFiles) {
             db.collection("audio").document(audio.title).set(audio)
         }
+    }
+
+    private fun uploadVideos() {
+        val db = FirebaseFirestore.getInstance()
+
+        val videos: ArrayList<Video> = ArrayList()
+
+
+        videos.add(
+            Video(
+                "NpGpiZfor0I",
+                "Ex-Prisoners Scary stories",
+                "Ex-Prisoners share their SCARIEST prison stories (r/AskReddit)",
+                "https://i.ytimg.com/vi/TkzwXjc-80A/maxresdefault.jpg"
+            )
+        )
+
+
+
+        for (video in videos) {
+
+            db.collection("videos")
+                .document("reddit")
+                .collection("2020")
+                .document(video.title).set(video)
+
+        }
+
+
     }
 }

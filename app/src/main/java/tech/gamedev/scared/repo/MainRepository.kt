@@ -1,8 +1,5 @@
 package tech.gamedev.scared.repo
 
-import com.google.android.gms.tasks.Task
-import com.google.firebase.firestore.Query
-import com.google.firebase.firestore.QuerySnapshot
 import tech.gamedev.scared.data.remote.FirebaseDatabase
 import javax.inject.Inject
 
@@ -11,5 +8,9 @@ class MainRepository @Inject constructor(
 ){
 
     fun getAllStories() = firebaseDatabase.getStoryList()
+
+    fun getAllDocumentaries() = firebaseDatabase.getDocumentaryList()
+
+    fun getAllRedditVideos() = firebaseDatabase.getRedditList()
 
 }

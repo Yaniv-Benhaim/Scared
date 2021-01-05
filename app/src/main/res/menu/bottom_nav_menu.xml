@@ -20,10 +20,10 @@
         app:showAsAction="ifRoom"/>
 
     <item
-        android:id="@+id/searchFragment"
-        android:icon="@drawable/ic_search"
-        android:title="Search"
-        app:showAsAction="ifRoom"/>
+        android:id="@+id/videoFragment"
+        android:icon="@drawable/ic_video"
+        android:title="Videos"
+        app:showAsAction="ifRoom" />
 
     <item
         android:id="@+id/profileFragment"
