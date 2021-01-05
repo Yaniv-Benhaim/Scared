@@ -1,5 +1,6 @@
 package tech.gamedev.scared.ui.fragments.main5
 
+import android.content.pm.ActivityInfo
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -35,12 +36,13 @@ class AudioFragment : Fragment(R.layout.fragment_audio) {
     @Inject
     lateinit var audioAdapter: AudioAdapter
 
-    private var curAdsDisplayed = 0
+
 
     @Inject
     lateinit var glide: RequestManager
 
     private lateinit var interstitialAd: InterstitialAd
+    private var curAdsDisplayed = 0
 
     private lateinit var binding: FragmentAudioBinding
 
@@ -55,8 +57,11 @@ class AudioFragment : Fragment(R.layout.fragment_audio) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        requireActivity().requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
         binding = FragmentAudioBinding.bind(view)
+
+        //SET FACEBOOK AD
+        AudienceNetworkAds.initialize(requireContext())
 
         setupRecyclerView()
         subscribeToObservers()
@@ -88,8 +93,7 @@ class AudioFragment : Fragment(R.layout.fragment_audio) {
             }
         }
 
-        //SET FACEBOOK AD
-        AudienceNetworkAds.initialize(requireContext())
+
 
 
         loginViewModel.user.observe(viewLifecycleOwner) {

@@ -2,6 +2,7 @@ package tech.gamedev.scared.ui.fragments.main5
 
 import android.content.ContentValues
 import android.content.Intent
+import android.content.pm.ActivityInfo
 import android.os.Bundle
 import android.view.View
 import androidx.core.view.isVisible
@@ -19,7 +20,6 @@ import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.fragment_profile.*
 import tech.gamedev.scared.R
 import tech.gamedev.scared.databinding.FragmentProfileBinding
 import tech.gamedev.scared.other.Constants.AUTH_REQUEST_CODE
@@ -48,6 +48,7 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        requireActivity().requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
         binding = FragmentProfileBinding.bind(view)
 
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)

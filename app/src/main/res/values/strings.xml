@@ -27,5 +27,6 @@
     <string name="sign_in">Sign in</string>
     <string name="not_signed_in">You are not signed in</string>
     <string name="website_url">https://gamedev-il.tech/index.php/scared-privacy-policy/</string>
+    <string name="videos">Videos</string>
 
 </resources>

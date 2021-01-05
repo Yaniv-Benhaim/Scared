@@ -1,10 +1,10 @@
 package tech.gamedev.scared.ui.fragments
 
+import android.content.pm.ActivityInfo
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import androidx.activity.addCallback
-import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
@@ -16,7 +16,6 @@ import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.You
 import kotlinx.android.synthetic.main.fragment_video_play.*
 import tech.gamedev.scared.R
 import tech.gamedev.scared.adapters.VerticalVideoAdapter
-import tech.gamedev.scared.adapters.VideoViewpagerAdapter
 import tech.gamedev.scared.databinding.FragmentVideoPlayBinding
 import tech.gamedev.scared.ui.viewmodels.VideoViewModel
 
@@ -53,7 +52,10 @@ class VideoPlayFragment : Fragment(R.layout.fragment_video_play), VerticalVideoA
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        requireActivity().requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED
         binding = FragmentVideoPlayBinding.bind(view)
+
+
 
         subscribeToObservers()
 

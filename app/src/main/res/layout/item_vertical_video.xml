@@ -10,13 +10,25 @@
     android:layout_marginBottom="24dp"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <com.airbnb.lottie.LottieAnimationView
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:elevation="4dp"
+        app:layout_constraintBottom_toBottomOf="@id/ivVerticalThumbnail"
+        app:layout_constraintEnd_toEndOf="@id/ivVerticalThumbnail"
+        app:layout_constraintStart_toStartOf="@id/ivVerticalThumbnail"
+        app:layout_constraintTop_toTopOf="@id/ivVerticalThumbnail"
+        app:lottie_autoPlay="true"
+        app:lottie_loop="true"
+        app:lottie_rawRes="@raw/play_lottie" />
+
     <ImageView
         android:id="@+id/ivVerticalThumbnail"
         android:layout_width="match_parent"
         android:layout_height="230dp"
         android:src="@drawable/img_story_example"
         android:scaleType="fitXY"
-        app:layout_constraintTop_toTopOf="parent"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cvAppLogo"

@@ -1,5 +1,6 @@
 package tech.gamedev.scared.ui.fragments.main5
 
+import android.content.pm.ActivityInfo
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -50,6 +51,7 @@ class BookFragment : Fragment(R.layout.fragment_book) , StoryAdapter.OnStoryClic
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        requireActivity().requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
 
         auth = Firebase.auth
     }

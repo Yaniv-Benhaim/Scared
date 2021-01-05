@@ -381,7 +381,7 @@
             android:visibility="gone"
             app:cardCornerRadius="5dp"
             app:cardElevation="4dp"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintEnd_toEndOf="@id/clProfileBar"
             app:layout_constraintTop_toBottomOf="@id/clProfileBar">
 
             <TextView

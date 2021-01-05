@@ -1,12 +1,11 @@
 package tech.gamedev.scared.ui.fragments
 
+import android.content.pm.ActivityInfo
 import android.os.Bundle
 import android.support.v4.media.session.PlaybackStateCompat
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.SeekBar
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.RequestManager
@@ -40,6 +39,7 @@ class SongFragment : Fragment(R.layout.fragment_song) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        requireActivity().requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
         mainViewModel = ViewModelProvider(requireActivity()).get(MainViewModel::class.java)
         subscribeToObservers()
 
